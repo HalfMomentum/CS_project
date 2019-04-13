@@ -1,0 +1,173 @@
+
+.outer-container{
+
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 55%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+
+}
+
+.container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  box-shadow: 1px 1px 7px 2px rgba(179, 180, 191, 0.85);
+  align-content:flex-start;
+}
+.img-content{
+  max-width: 40%;
+  height: auto;
+}
+.np{
+  padding: 5px;
+}
+.mp{
+  padding: 10px;
+}
+.exp{
+  padding: 20px;
+}
+.rp{
+  padding-right: 20px;
+}
+.item-img{
+  align-self: flex-start;
+
+}
+.content{
+  padding-bottom: 20px;
+}
+.space{
+  height: 30px;
+  margin-left: 10%;
+  border-left-style: solid;
+  border-left-color: rgba(80, 83, 80, 0.35) ;
+
+  /* border-style:solid; */
+}
+.details{
+  padding: 20px;
+}
+
+.places-to-stay{
+  padding-left: 10%;
+  padding-bottom: 10%;
+}
+
+.pic{
+  width: 35%;
+  margin-top:50px;
+  padding-right: 20px;
+
+}
+.date-time{
+  margin-top: 7%;
+  margin-left: 5%;
+  min-width: 20%;
+  align-items: center;
+}
+.date-time-time1{
+  font-style: italic;
+
+}
+.date-time-time2{
+  font-style: italic;
+  font-size: 85%;
+
+}
+
+.txt-content{
+  margin-top: 5%;
+}
+.travel-time{
+  margin-left:2%;
+  margin-top: 3%;
+
+  font-style: italic;
+}
+.Stay{
+  padding-left: 10%;
+}
+.bg-myColor{
+  background-color: rgb(0, 0, 0);
+}
+.linkBar-item{
+padding:10px;
+border-left: solid;
+border-right: solid;
+
+}
+
+.top-display-nav{
+  margin-left: 30%;
+}
+.top-place{
+  height: 30px;
+  text-align: center;
+  width: 20%;
+  font-size: 20px;
+  /* background-color: yellow; */
+}
+.top-place-text{
+
+}
+.top-day{
+  height: 30px;
+  color: rgb(255, 255, 255);
+  background-color: rgb(37, 42, 39);
+  text-align: center;
+  width: 18%;
+  border-radius: 20px;
+  padding: 2px;
+}
+.linkBar-item-link{
+  color: rgb(0, 0, 0);
+}
+.est-time{
+  font-style: italic;
+  color: rgb(136, 132, 138);
+  padding-top: 1%;
+  padding-left: 5%;
+}
+#navbar2SupportedContent{
+  margin-left: 20%;
+}
+.footer{
+
+  color: rgb(255, 255, 255);
+  width: 100%;
+  background-color: rgb(0, 0, 0);
+    display: flex;
+    flex-direction: row;
+}
+.footer-content{
+  padding: 30px;
+  text-align: center;
+  width: 33.33333333%;
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+
+
+}
+.more-space{
+  height: 300px;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+.borderer{
+  border-left: solid;
+  border-color: rgb(167, 203, 16);
+  padding: 30px;
+}
+.fc1{
+  border-left: none;
+}
