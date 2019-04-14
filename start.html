@@ -1,0 +1,196 @@
+<html>
+
+<head>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Waypoint Check</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="start.css" />
+
+</head>
+
+<body>
+  <div id="app" class="">
+    <div class="ui top attached tabular menu">
+      <a class="active item" data-tab="first">Where to Stay</a>
+      <a class="item" data-tab="second">Map</a>
+      <a class="item" data-tab="third">Third</a>
+    </div>
+    <div class="ui bottom attached active tab segment" data-tab="first">
+      <div class="ui segments">
+        <div class="ui padded segment" v-for="hotel in hotels" :key="hotel.id">
+          <div class="ui cards">
+            <div class="card">
+              <div class="image">
+                {{hotel.photos}}
+              </div>
+            </div>
+            <div class="card">
+              <div class="content">
+                <a class="header">{{hotel.name}}</a>
+                <div class="meta">
+                  <span class="date">{{hotel.vicinity}}</span>
+                </div>
+                <!--div class="description">
+                    Kristy is an art director living in New York.
+                  </div-->
+              </div>
+              <div class="extra content">
+                <span class="right floated">
+                  {{hotel.rating}}
+                  <i class="heart outline like icon"></i>
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="second">
+      <div id="map"></div>
+      <div id="right-panel">
+        <div>
+          <b>Start:</b>
+          <p>Click the button to get your coordinates.</p>
+
+          <button onclick="getLocation()">Try It</button>
+
+          <p id="demo"></p>
+          <script>
+            var x = document.getElementById("demo");
+
+            function getLocation() {
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+              } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+              }
+            }
+
+            function showPosition(position) {
+              x.innerHTML = "Latitude: " + position.coords.latitude +
+                "<br>Longitude: " + position.coords.longitude;
+            }
+          </script>
+          <select id="start">
+            <option value="28.6129, 77.2295">India Gate</option>
+            <option value="Boston, MA">Boston, MA</option>
+            <option value="New York, NY">New York, NY</option>
+            <option value="Miami, FL">Miami, FL</option>
+          </select>
+          <br>
+          <b>Waypoints:</b> <br>
+          <i>(Ctrl+Click or Cmd+Click for multiple selection)</i> <br>
+          <select multiple id="waypoints">
+            <option value="lotus temple">Lotus Temple</option>
+            <option value="akshardham">Akshardham</option>
+            <option value="Shiv Nadar University">SNU</option>
+            <option value="winnipeg, mb">Winnipeg</option>
+            <option value="fargo, nd">Fargo</option>
+            <option value="calgary, ab">Calgary</option>
+            <option value="spokane, wa">Spokane</option>
+          </select>
+          <br>
+          <b>End:</b>
+          <select id="end">
+            <option value="28.4744, 77.5040">GN</option>
+            <option value="Seattle, WA">Seattle, WA</option>
+            <option value="San Francisco, CA">San Francisco, CA</option>
+            <option value="Los Angeles, CA">Los Angeles, CA</option>
+          </select>
+          <br>
+          <input type="submit" id="submit">
+        </div>
+        <div id="directions-panel"></div>
+      </div>
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="third">
+      <div class="ui very relaxed celled list">
+        <div class="item" v-for="hotel in hotels" :key="hotel.id">
+          <img>
+          <div class="content">
+            <div class="header">
+              {{hotel.name}}
+              <div class="ui star rating" data-rating={{hotel.rating}}></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="start.js"></script>
+<script>
+  function initMap() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 11,
+      center: {
+        lat: 28.6139,
+        lng: 77.2090
+      }
+    });
+    directionsDisplay.setMap(map);
+
+    document.getElementById('submit').addEventListener('click', function () {
+      calculateAndDisplayRoute(directionsService, directionsDisplay);
+    });
+  }
+
+  function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+    var waypts = [];
+    var checkboxArray = document.getElementById('waypoints');
+    for (var i = 0; i < checkboxArray.length; i++) {
+      if (checkboxArray.options[i].selected) {
+        waypts.push({
+          location: checkboxArray[i].value,
+          stopover: true
+        });
+      }
+    }
+
+    directionsService.route({
+      origin: document.getElementById('start').value,
+      destination: document.getElementById('end').value,
+      waypoints: waypts,
+      optimizeWaypoints: true,
+      travelMode: 'DRIVING'
+    }, function (response, status) {
+      if (status === 'OK') {
+        directionsDisplay.setDirections(response);
+        var route = response.routes[0];
+        var summaryPanel = document.getElementById('directions-panel');
+        summaryPanel.innerHTML = '';
+        // For each route, display summary information.
+        for (var i = 0; i < route.legs.length; i++) {
+          var routeSegment = i + 1;
+          summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
+            '</b><br>';
+          summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+          summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+          summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+        }
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
+    });
+  }
+</script>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-Ykp-FMb4dJasTNaooTKQ-ejJXEcldJY&callback=initMap">
+</script>
+
+</html>
